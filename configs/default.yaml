@@ -1,0 +1,46 @@
+# Training/eval hyperparameters
+seed: 42
+device: "cuda"
+
+# Data
+data_root: "/path/to/data"   # set this
+datasets:
+  ks: {name: "kvasir_seg", split: "train", img_size: 352}
+  cvc: {name: "cvc_clinicdb", split: "train", img_size: 352}
+  hk: {name: "hyperkvasir", split: "train", img_size: 256}
+  gv: {name: "gastrovision", split: "train", img_size: 256}
+loader:
+  batch_size: 16
+  num_workers: 4
+
+# Optimizer & schedule
+optim:
+  name: "adamw"
+  lr: 1.0e-4
+  weight_decay: 1.0e-2
+epochs:
+  ks: 150
+  cvc: 150
+  hk: 120
+  gv: 120
+early_stopping:
+  patience_seg: 20
+  patience_cls: 15
+
+# Loss weights (Eq. (23) in paper)
+loss_weights:
+  lambda_cls: 1.0
+  lambda_align: 1.0
+  lambda_faith: 0.5
+  lambda_sparse: 0.1
+  lambda_route: 0.01
+  tv_strength: 0.05
+
+# DER
+experts: 3
+
+# Explainability fusion (Eq. (30))
+fusion_weights:
+  beta1: 0.5
+  beta2: 0.3
+  beta3: 0.2
